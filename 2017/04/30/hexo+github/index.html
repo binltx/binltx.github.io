@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>hexo+github搭建个人博客 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="NodeJs官网安装mac:1brew install node git官网安装mac:1brew install git gitHub###1.去官网注册/登录 ###2.创建仓库点击右边的+号 -&amp;gt; new repository在 Repository name 中填入 用户名(Owner).github.io , 点击 Create repository复制 github仓库地址 (g">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo+github搭建个人博客">
+<meta property="og:url" content="http://yoursite.com/2017/04/30/hexo+github/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="NodeJs官网安装mac:1brew install node git官网安装mac:1brew install git gitHub###1.去官网注册/登录 ###2.创建仓库点击右边的+号 -&amp;gt; new repository在 Repository name 中填入 用户名(Owner).github.io , 点击 Create repository复制 github仓库地址 (g">
+<meta property="og:updated_time" content="2017-04-30T09:21:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="hexo+github搭建个人博客">
+<meta name="twitter:description" content="NodeJs官网安装mac:1brew install node git官网安装mac:1brew install git gitHub###1.去官网注册/登录 ###2.创建仓库点击右边的+号 -&amp;gt; new repository在 Repository name 中填入 用户名(Owner).github.io , 点击 Create repository复制 github仓库地址 (g">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,45 +64,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-git" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/30/git/" class="article-date">
-  <time datetime="2017-04-30T09:22:28.000Z" itemprop="datePublished">2017-04-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>1、使用ubunutu自带的apt-get安装git<br>     sudo apt-get install git-core git-gui git-doc gtk</p>
-<pre><code>如果安装的版本不够新，比如不是1.9.5，那可能是ubuntu的源太旧，在源里面配置git的源地址
-sudo add-apt-repository ppa:git-core/ppa
-sudo apt-get update
-sudo apt-get install git
-</code></pre><p>add-apt-repository 是由 python-software-properties 这个工具包提供的，如果使用 add-apt-repository显示“command not found”需要安装python-software-properties<br>安装方法：<br>1.首先需要安装software-properties-common<br>$ sudo apt-get install software-properties-common<br>2.然后安装python-software-properties<br>$ sudo apt-get install python-software-properties</p>
-<p>问题1：     将ssh-key上传到gitlab以后，会提示git@git.xxx：密码，<br>解决方法：这个是因为没有把私钥告诉本地系统，ssh-add ~/.ssh/id_rsa就可以了</p>
-<p>问题2：     命令行正常使用，intellij不行，提示 can not read remote repository<br>解决方法： 选择git配置，选择native</p>
-<p>git一些有用的配置：<br>git config –global push.default simple # 要是你非要用低版本的Git（比如1.7.x），好吧，那就不设simple设current，否则你的Git不支持<br>git config –global core.autocrlf false    # 让Git不要管Windows/Unix换行符转换的事<br>git config –global gui.encoding utf-8  # 避免git gui中的中文乱码<br>git config –global core.quotepath off  # 避免git status显示的中文文件名乱码<br>Windows上还需要配置：<br>git config –global core.ignorecase false<br>Mac上，还需要配置<br>git config –global mergetool.kdiff3.path /Applications/kdiff3.app/Contents/MacOS/kdiff3</p>
-<p>git配置别名：<br>git config –global alias.ci commit #ci代表commit<br>git config –global alias.co checkout<br>git config –global alias.cl clone<br>git config –global alias.br branch</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cj24hnxhp00012ls6mcs3yhw0" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hexo+github" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-hexo+github" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/04/30/hexo+github/" class="article-date">
   <time datetime="2017-04-30T09:21:09.000Z" itemprop="datePublished">2017-04-30</time>
@@ -110,8 +77,8 @@ sudo apt-get install git
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/30/hexo+github/">hexo+github搭建个人博客</a>
+    <h1 class="article-title" itemprop="name">
+      hexo+github搭建个人博客
     </h1>
   
 
@@ -148,55 +115,28 @@ sudo apt-get install git
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/08/hello-world/" class="article-date">
-  <time datetime="2017-04-08T08:22:56.000Z" itemprop="datePublished">2017-04-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+    <a href="/2017/04/08/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
         
+          Hello World
+        
+      </div>
+    </a>
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/08/hello-world/">Hello World</a>
-    </h1>
   
+    <a href="/2017/04/30/git/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/08/hello-world/" data-id="cj24hnxhk00002ls60ltvyngq" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
 
 </section>
         

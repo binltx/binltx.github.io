@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1、使用ubunutu自带的apt-get安装git     sudo apt-get install git-core git-gui git-doc gtk 如果安装的版本不够新，比如不是1.9.5，那可能是ubuntu的源太旧，在源里面配置git的源地址 sudo add-apt-repository ppa:git-core/ppa sudo apt-get update sudo apt">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2017/04/30/git/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、使用ubunutu自带的apt-get安装git     sudo apt-get install git-core git-gui git-doc gtk 如果安装的版本不够新，比如不是1.9.5，那可能是ubuntu的源太旧，在源里面配置git的源地址 sudo add-apt-repository ppa:git-core/ppa sudo apt-get update sudo apt">
+<meta property="og:updated_time" content="2017-04-30T09:22:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="1、使用ubunutu自带的apt-get安装git     sudo apt-get install git-core git-gui git-doc gtk 如果安装的版本不够新，比如不是1.9.5，那可能是ubuntu的源太旧，在源里面配置git的源地址 sudo add-apt-repository ppa:git-core/ppa sudo apt-get update sudo apt">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-git" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/30/git/" class="article-date">
+  <time datetime="2017-04-30T09:22:28.000Z" itemprop="datePublished">2017-04-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1、使用ubunutu自带的apt-get安装git<br>     sudo apt-get install git-core git-gui git-doc gtk</p>
+<pre><code>如果安装的版本不够新，比如不是1.9.5，那可能是ubuntu的源太旧，在源里面配置git的源地址
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt-get update
+sudo apt-get install git
+</code></pre><p>add-apt-repository 是由 python-software-properties 这个工具包提供的，如果使用 add-apt-repository显示“command not found”需要安装python-software-properties<br>安装方法：<br>1.首先需要安装software-properties-common<br>$ sudo apt-get install software-properties-common<br>2.然后安装python-software-properties<br>$ sudo apt-get install python-software-properties</p>
+<p>问题1：     将ssh-key上传到gitlab以后，会提示git@git.xxx：密码，<br>解决方法：这个是因为没有把私钥告诉本地系统，ssh-add ~/.ssh/id_rsa就可以了</p>
+<p>问题2：     命令行正常使用，intellij不行，提示 can not read remote repository<br>解决方法： 选择git配置，选择native</p>
+<p>git一些有用的配置：<br>git config –global push.default simple # 要是你非要用低版本的Git（比如1.7.x），好吧，那就不设simple设current，否则你的Git不支持<br>git config –global core.autocrlf false    # 让Git不要管Windows/Unix换行符转换的事<br>git config –global gui.encoding utf-8  # 避免git gui中的中文乱码<br>git config –global core.quotepath off  # 避免git status显示的中文文件名乱码<br>Windows上还需要配置：<br>git config –global core.ignorecase false<br>Mac上，还需要配置<br>git config –global mergetool.kdiff3.path /Applications/kdiff3.app/Contents/MacOS/kdiff3</p>
+<p>git配置别名：<br>git config –global alias.ci commit #ci代表commit<br>git config –global alias.co checkout<br>git config –global alias.cl clone<br>git config –global alias.br branch</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cj24hnxhp00012ls6mcs3yhw0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/30/hexo+github/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          hexo+github搭建个人博客
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/30/git/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/hexo+github/">hexo+github搭建个人博客</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/08/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
