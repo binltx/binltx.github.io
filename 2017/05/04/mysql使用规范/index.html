@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>mysql使用规范 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="一、基础规范（1）必须使用UTF8字符集解读：a）万国码，无需转码，无乱码风险，节省空间b）由于移动设备原因最好使用utf8mb4，毕竟现在的表情包太发达了c）没有存储表情包等需求的话用Unicode也行，目前我们默认是用Unicode（2）尽量避免使用存储过程、视图、触发器、Event，尽量避免在数据库上做计算解读：高并发大数据的互联网业务，架构设计思路是“解放数据库CPU，将计算转移到服务层”">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="mysql使用规范">
 <meta property="og:url" content="http://yoursite.com/2017/05/04/mysql使用规范/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="一、基础规范（1）必须使用UTF8字符集解读：a）万国码，无需转码，无乱码风险，节省空间b）由于移动设备原因最好使用utf8mb4，毕竟现在的表情包太发达了c）没有存储表情包等需求的话用Unicode也行，目前我们默认是用Unicode（2）尽量避免使用存储过程、视图、触发器、Event，尽量避免在数据库上做计算解读：高并发大数据的互联网业务，架构设计思路是“解放数据库CPU，将计算转移到服务层”">
-<meta property="og:updated_time" content="2017-05-04T07:06:55.000Z">
+<meta property="og:updated_time" content="2018-01-17T13:00:20.758Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="mysql使用规范">
 <meta name="twitter:description" content="一、基础规范（1）必须使用UTF8字符集解读：a）万国码，无需转码，无乱码风险，节省空间b）由于移动设备原因最好使用utf8mb4，毕竟现在的表情包太发达了c）没有存储表情包等需求的话用Unicode也行，目前我们默认是用Unicode（2）尽量避免使用存储过程、视图、触发器、Event，尽量避免在数据库上做计算解读：高并发大数据的互联网业务，架构设计思路是“解放数据库CPU，将计算转移到服务层”">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -73,6 +73,16 @@
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mysql使用规范
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
         <p>一、基础规范<br>（1）必须使用UTF8字符集<br>解读：<br>a）万国码，无需转码，无乱码风险，节省空间<br>b）由于移动设备原因最好使用utf8mb4，毕竟现在的表情包太发达了<br>c）没有存储表情包等需求的话用Unicode也行，目前我们默认是用Unicode<br>（2）尽量避免使用存储过程、视图、触发器、Event，尽量避免在数据库上做计算<br>解读：高并发大数据的互联网业务，架构设计思路是“解放数据库CPU，将计算转移到服务层”，并发量大的情况下，这些功能很可能将数据库拖死，业务逻辑放到服务层具备更好的扩展性，能够轻易实现“增机器就加性能”。数据库擅长存储与索引，CPU计算还是上移吧<br>（3）拒绝大sql、大事务、大批量，否则你早晚会遇到一个词：死锁<br>解读：<br>a）尽可能的简化sql，长sql拼的时候麻烦，改起来麻烦，效率还不高；<br>非要很自信的拼sql的话就想想你读别人代码改程序时核心代码是一条20行的sql，N层子查询嵌套子查询，你难受不<br>b）什么场景需要一次同时修改至少5张表？如果有，这个tps一定不会很高<br>c）数据量很大的话就分批次操作吧</p>
@@ -105,7 +115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjcitm9hp0002cdbqfovxh3l2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjcj2qbs80003jubq6jptu0et" class="article-share-link">Share</a>
       
       
     </footer>
@@ -113,6 +123,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/01/17/kotilin基本使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          kotilin基本使用
+        
+      </div>
+    </a>
   
   
     <a href="/2017/04/30/git/" id="article-nav-older" class="article-nav-link-wrap">
@@ -141,7 +160,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
     </div>
   </div>
 
@@ -154,7 +173,11 @@
       <ul>
         
           <li>
-            <a href="/2017/05/04/mysql使用规范/">(no title)</a>
+            <a href="/2018/01/17/kotilin基本使用/">kotilin基本使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/mysql使用规范/">mysql使用规范</a>
           </li>
         
           <li>

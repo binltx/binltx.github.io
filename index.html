@@ -61,6 +61,52 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kotilin基本使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/17/kotilin基本使用/" class="article-date">
+  <time datetime="2018-01-17T12:55:23.586Z" itemprop="datePublished">2018-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/17/kotilin基本使用/">kotilin基本使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.jetbrains.kotlin<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kotlin-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="class定义"><a href="#class定义" class="headerlink" title="class定义"></a>class定义</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseTest</span> </span>&#123;&#125;</div></pre></td></tr></table></figure>
+<h4 id="junit测试注解"><a href="#junit测试注解" class="headerlink" title="junit测试注解"></a>junit测试注解</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner::class)</span></div><div class="line"><span class="meta">@ContextConfiguration(locations = arrayOf(<span class="meta-string">"classpath:spring/applicationContext.xml"</span>)</span>)</div></pre></td></tr></table></figure>
+<h4 id="初始化方法声明"><a href="#初始化方法声明" class="headerlink" title="初始化方法声明"></a>初始化方法声明</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">init &#123;</div><div class="line">       System.setProperty(<span class="string">"process.profile"</span>, <span class="string">"ceshi113"</span>)</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h4 id="class继承"><a href="#class继承" class="headerlink" title="class继承"></a>class继承</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestDubbo</span> : <span class="type">BaseTest</span></span>() &#123;&#125;</div></pre></td></tr></table></figure>
+<h4 id="junit测试方法声明"><a href="#junit测试方法声明" class="headerlink" title="junit测试方法声明"></a>junit测试方法声明</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">testGet</span><span class="params">()</span></span> &#123;&#125;</div></pre></td></tr></table></figure>
+<h4 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">auditLogService: AuditLogService</div></pre></td></tr></table></figure>
+<h4 id="spring-Autowired-注解"><a href="#spring-Autowired-注解" class="headerlink" title="spring @Autowired 注解"></a>spring @Autowired 注解</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span></div><div class="line">   <span class="keyword">val</span> auditLogService: AuditLogService? = <span class="literal">null</span></div></pre></td></tr></table></figure>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> auditLogEntity = AuditLogEntity(<span class="number">999999</span>, <span class="number">999</span>, System.currentTimeMillis(), <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, Lists.newArrayList(OperationObjectEntity(<span class="number">1</span>, <span class="string">"1"</span>)), <span class="number">1</span>, <span class="string">"测试审计日志"</span>, System.currentTimeMillis())</div><div class="line"></div><div class="line">searchAuditLogDao?.save(auditLogEntity)</div></pre></td></tr></table></figure>
+<h4 id="完整测试"><a href="#完整测试" class="headerlink" title="完整测试"></a>完整测试</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner</div><div class="line"></div><div class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner::class)</span></div><div class="line"><span class="meta">@ContextConfiguration(locations = arrayOf(<span class="meta-string">"classpath:spring/applicationContext.xml"</span>)</span>)</div><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseTest</span> </span>&#123;</div><div class="line">    init &#123;</div><div class="line">        System.setProperty(<span class="string">"process.profile"</span>, <span class="string">"ceshi113"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> audit.log.test.BaseTest</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.elasticsearch.SearchAuditLogDao</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.entity.AuditLogEntity</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.entity.OperationObjectEntity</div><div class="line"><span class="keyword">import</span> com.google.common.collect.Lists</div><div class="line"><span class="keyword">import</span> org.junit.Test</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.<span class="keyword">annotation</span>.Autowired</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSearchAuditLogDao</span> : <span class="type">BaseTest</span></span>() &#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">val</span> searchAuditLogDao: SearchAuditLogDao? = <span class="literal">null</span></div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> `save`<span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">val</span> auditLogEntity = AuditLogEntity(<span class="number">999999</span>, <span class="number">999</span>, System.currentTimeMillis(), <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, Lists.newArrayList(OperationObjectEntity(<span class="number">1</span>, <span class="string">"1"</span>)), <span class="number">1</span>, <span class="string">"测试审计日志"</span>, System.currentTimeMillis())</div><div class="line"></div><div class="line">        searchAuditLogDao?.save(auditLogEntity)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/17/kotilin基本使用/" data-id="cjcj2qbs40001jubq2k1qgq3j" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mysql使用规范" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/05/04/mysql使用规范/" class="article-date">
@@ -70,6 +116,16 @@
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/04/mysql使用规范/">mysql使用规范</a>
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -103,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjcitm9hp0002cdbqfovxh3l2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjcj2qbs80003jubq6jptu0et" class="article-share-link">Share</a>
       
       
     </footer>
@@ -149,7 +205,7 @@ sudo apt-get install git
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cjcitm9gn0000cdbq6sqac5iq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cjcj2qbs10000jubqd9itzpms" class="article-share-link">Share</a>
       
       
     </footer>
@@ -203,7 +259,7 @@ sudo apt-get install git
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/30/hexo+github/" data-id="cjcitm9ho0001cdbqo5aiou77" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/30/hexo+github/" data-id="cjcj2qbs60002jubqxqfhoesb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -230,7 +286,7 @@ sudo apt-get install git
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
     </div>
   </div>
 
@@ -243,7 +299,11 @@ sudo apt-get install git
       <ul>
         
           <li>
-            <a href="/2017/05/04/mysql使用规范/">(no title)</a>
+            <a href="/2018/01/17/kotilin基本使用/">kotilin基本使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/mysql使用规范/">mysql使用规范</a>
           </li>
         
           <li>
