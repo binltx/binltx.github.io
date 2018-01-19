@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/01/17/kotilin基本使用/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="pom.xml123456&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;kotlin-test&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.1.0&amp;lt;/version&amp;gt;    &amp;lt;scope&amp;gt;test&amp;">
-<meta property="og:updated_time" content="2018-01-17T13:00:55.763Z">
+<meta property="og:updated_time" content="2018-01-17T13:43:13.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kotilin基本使用">
 <meta name="twitter:description" content="pom.xml123456&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;gt;org.jetbrains.kotlin&amp;lt;/groupId&amp;gt;    &amp;lt;artifactId&amp;gt;kotlin-test&amp;lt;/artifactId&amp;gt;    &amp;lt;version&amp;gt;1.1.0&amp;lt;/version&amp;gt;    &amp;lt;scope&amp;gt;test&amp;">
@@ -94,12 +94,13 @@
 <h4 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">auditLogService: AuditLogService</div></pre></td></tr></table></figure>
 <h4 id="spring-Autowired-注解"><a href="#spring-Autowired-注解" class="headerlink" title="spring @Autowired 注解"></a>spring @Autowired 注解</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Autowired</span></div><div class="line">   <span class="keyword">val</span> auditLogService: AuditLogService? = <span class="literal">null</span></div></pre></td></tr></table></figure>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> auditLogEntity = AuditLogEntity(<span class="number">999999</span>, <span class="number">999</span>, System.currentTimeMillis(), <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, Lists.newArrayList(OperationObjectEntity(<span class="number">1</span>, <span class="string">"1"</span>)), <span class="number">1</span>, <span class="string">"测试审计日志"</span>, System.currentTimeMillis())</div><div class="line"></div><div class="line">searchAuditLogDao?.save(auditLogEntity)</div></pre></td></tr></table></figure>
+<h4 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scene = allScenes?.scenes?.stream()?.filter(&#123; s: Scene -&gt; s.sceneName.equals(s1) &#125;)?.findAny()?.<span class="keyword">get</span>()</div></pre></td></tr></table></figure>
 <h4 id="完整测试"><a href="#完整测试" class="headerlink" title="完整测试"></a>完整测试</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner</div><div class="line"></div><div class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner::class)</span></div><div class="line"><span class="meta">@ContextConfiguration(locations = arrayOf(<span class="meta-string">"classpath:spring/applicationContext.xml"</span>)</span>)</div><div class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseTest</span> </span>&#123;</div><div class="line">    init &#123;</div><div class="line">        System.setProperty(<span class="string">"process.profile"</span>, <span class="string">"ceshi113"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> audit.log.test.BaseTest</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.elasticsearch.SearchAuditLogDao</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.entity.AuditLogEntity</div><div class="line"><span class="keyword">import</span> com.fxiaoke.audit.log.provider.dao.entity.OperationObjectEntity</div><div class="line"><span class="keyword">import</span> com.google.common.collect.Lists</div><div class="line"><span class="keyword">import</span> org.junit.Test</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.<span class="keyword">annotation</span>.Autowired</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSearchAuditLogDao</span> : <span class="type">BaseTest</span></span>() &#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">val</span> searchAuditLogDao: SearchAuditLogDao? = <span class="literal">null</span></div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">fun</span> `save`<span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">val</span> auditLogEntity = AuditLogEntity(<span class="number">999999</span>, <span class="number">999</span>, System.currentTimeMillis(), <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, Lists.newArrayList(OperationObjectEntity(<span class="number">1</span>, <span class="string">"1"</span>)), <span class="number">1</span>, <span class="string">"测试审计日志"</span>, System.currentTimeMillis())</div><div class="line"></div><div class="line">        searchAuditLogDao?.save(auditLogEntity)</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/17/kotilin基本使用/" data-id="cjcj2qbs40001jubq2k1qgq3j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/17/kotilin基本使用/" data-id="cjclukptp00031gbqikvswsij" class="article-share-link">Share</a>
       
       
     </footer>
@@ -107,6 +108,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/01/17/elasticsearch基本使用--增删改/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          elasticsearch基本使用--增删改
+        
+      </div>
+    </a>
   
   
     <a href="/2017/05/04/mysql使用规范/" id="article-nav-older" class="article-nav-link-wrap">
@@ -148,6 +158,14 @@
       <ul>
         
           <li>
+            <a href="/2018/01/19/elasticsearch基本使用--搜索/">elasticsearch基本使用--搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/elasticsearch基本使用--增删改/">elasticsearch基本使用--增删改</a>
+          </li>
+        
+          <li>
             <a href="/2018/01/17/kotilin基本使用/">kotilin基本使用</a>
           </li>
         
@@ -157,10 +175,6 @@
         
           <li>
             <a href="/2017/04/30/git/">git</a>
-          </li>
-        
-          <li>
-            <a href="/2017/04/30/hexo+github/">hexo+github搭建个人博客</a>
           </li>
         
       </ul>

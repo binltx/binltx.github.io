@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>elasticsearch基本使用--搜索 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="获取数据长度es搜索是必须分页的,如果没有指定size,那么会默认返回10条但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll123456789101112131415161718protected Pair&amp;lt;Long, List&amp;lt;T&amp;gt;&amp;gt; getAll(QueryBui">
+<meta property="og:type" content="article">
+<meta property="og:title" content="elasticsearch基本使用--搜索">
+<meta property="og:url" content="http://yoursite.com/2018/01/19/elasticsearch基本使用--搜索/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="获取数据长度es搜索是必须分页的,如果没有指定size,那么会默认返回10条但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll123456789101112131415161718protected Pair&amp;lt;Long, List&amp;lt;T&amp;gt;&amp;gt; getAll(QueryBui">
+<meta property="og:updated_time" content="2018-01-19T11:34:58.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="elasticsearch基本使用--搜索">
+<meta name="twitter:description" content="获取数据长度es搜索是必须分页的,如果没有指定size,那么会默认返回10条但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll123456789101112131415161718protected Pair&amp;lt;Long, List&amp;lt;T&amp;gt;&amp;gt; getAll(QueryBui">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-elasticsearch基本使用--搜索" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/19/elasticsearch基本使用--搜索/" class="article-date">
+  <time datetime="2018-01-19T11:29:04.577Z" itemprop="datePublished">2018-01-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      elasticsearch基本使用--搜索
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="获取数据长度"><a href="#获取数据长度" class="headerlink" title="获取数据长度"></a>获取数据长度</h4><p>es搜索是必须分页的,如果没有指定size,那么会默认返回10条<br>但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> Pair&lt;Long, List&lt;T&gt;&gt; getAll(QueryBuilder queryBuilder) &#123;</div><div class="line">    <span class="keyword">int</span> size = <span class="number">5000</span>;</div><div class="line">    TimeValue keepAlive = TimeValue.timeValueMillis(<span class="number">1</span>);</div><div class="line">    SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getIndex()).setTypes(getType()).setQuery(queryBuilder).setSize(size).setScroll(keepAlive);</div><div class="line">    SearchResponse searchResponse = searchRequestBuilder.execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">    Pair&lt;Long, List&lt;T&gt;&gt; resultAndTotal = getResultAndTotal(searchResponse);</div><div class="line">    Long total = resultAndTotal.getKey();</div><div class="line">    <span class="keyword">if</span> (total &gt; size) &#123;</div><div class="line">        List&lt;T&gt; right = resultAndTotal.getRight();</div><div class="line">        String scrollId = searchResponse.getScrollId();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; total / size; i++) &#123;</div><div class="line">            SearchResponse searchResponse1 = client.prepareSearchScroll(scrollId).setScroll(keepAlive).execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">            right.addAll(getResult(searchResponse1));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> resultAndTotal;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/19/elasticsearch基本使用--搜索/" data-id="cjclukptf00011gbq7zye17na" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/17/elasticsearch基本使用--增删改/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">elasticsearch基本使用--增删改</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/elasticsearch基本使用--搜索/">elasticsearch基本使用--搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/elasticsearch基本使用--增删改/">elasticsearch基本使用--增删改</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/17/kotilin基本使用/">kotilin基本使用</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/mysql使用规范/">mysql使用规范</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/30/git/">git</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
