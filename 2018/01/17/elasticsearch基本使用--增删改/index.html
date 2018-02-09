@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2018/01/17/elasticsearch基本使用--增删改/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="pom1234567891011121314151617181920&amp;lt;dependency&amp;gt;          &amp;lt;groupId&amp;gt;org.elasticsearch&amp;lt;/groupId&amp;gt;          &amp;lt;artifactId&amp;gt;elasticsearch&amp;lt;/artifactId&amp;gt;          &amp;lt;version&amp;gt;$&amp;#12">
-<meta property="og:updated_time" content="2018-01-19T11:36:05.671Z">
+<meta property="og:updated_time" content="2018-02-09T07:07:36.544Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="elasticsearch基本使用--增删改">
 <meta name="twitter:description" content="pom1234567891011121314151617181920&amp;lt;dependency&amp;gt;          &amp;lt;groupId&amp;gt;org.elasticsearch&amp;lt;/groupId&amp;gt;          &amp;lt;artifactId&amp;gt;elasticsearch&amp;lt;/artifactId&amp;gt;          &amp;lt;version&amp;gt;$&amp;#12">
@@ -52,9 +52,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -93,12 +93,14 @@
 <h4 id="删除index"><a href="#删除index" class="headerlink" title="删除index"></a>删除index</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client.admin().indices().prepareDelete(indexName).get();</div></pre></td></tr></table></figure>
 <h4 id="添加-修改-数据"><a href="#添加-修改-数据" class="headerlink" title="添加/修改 数据"></a>添加/修改 数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">IndexResponse indexResponse = client.prepareIndex(getIndex(), getType(), id)</div><div class="line">        .setSource(JSON.toJSONString(entity), XContentType.JSON)</div><div class="line">        .get();</div></pre></td></tr></table></figure>
 <h4 id="修改部分数据"><a href="#修改部分数据" class="headerlink" title="修改部分数据"></a>修改部分数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">UpdateRequest updateRequest = <span class="keyword">new</span> UpdateRequest(getIndex(), getType(), id)</div><div class="line">        .doc(jsonBuilder()</div><div class="line">                .startObject()</div><div class="line">                .field(filed, value)</div><div class="line">                .endObject());</div><div class="line"></div><div class="line">UpdateResponse updateResponse = client.update(updateRequest).get();</div></pre></td></tr></table></figure>
+<p>上面的方法只能修改简单的基本类型和String,Date 这几种类型,复杂类型看下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">XContentBuilder xContentBuilder = jsonBuilder().startObject();</div><div class="line">xContentBuilder.startObject(filed);</div><div class="line">Map&lt;String, Object&gt; valueMap = JSON.parseObject(JSON.toJSONString(value), Map.class);</div><div class="line"><span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; objectEntry : valueMap.entrySet()) &#123;</div><div class="line">    xContentBuilder.field(objectEntry.getKey(), objectEntry.getValue());</div><div class="line">&#125;</div><div class="line">xContentBuilder.endObject();</div><div class="line">source.endObject();</div></pre></td></tr></table></figure></p>
+<p>更复杂的类型造这这个原理递推即可</p>
 <h4 id="需要强一致性"><a href="#需要强一致性" class="headerlink" title="需要强一致性"></a>需要强一致性</h4><p>es写接口默认写数量为 node/2 + 1 ,所以可能会出现写完成后查数据没有修改/写入,当你需要强一致性的时候,需要强制指定更新所有节点.<br>es会将数据加载到内存上,以提高查询速度,但你修改数据后,内存并不会实时更新,所以修改数据时同样需要指定更新内存数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">IndexResponse indexResponse = client.prepareIndex(getIndex(), getType(), id)</div><div class="line">        .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)</div><div class="line">        .setWaitForActiveShards(ActiveShardCount.ALL)</div><div class="line">        <span class="comment">// todo dosomething</span></div><div class="line">        ........</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/17/elasticsearch基本使用--增删改/" data-id="cjclukptb00001gbq7j1sadru" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/17/elasticsearch基本使用--增删改/" data-id="cjdfmfx3o0002x3bqhu048735" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -108,7 +110,7 @@
 <nav id="article-nav">
   
     <a href="/2018/01/19/elasticsearch基本使用--搜索/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
           elasticsearch基本使用--搜索
@@ -118,7 +120,7 @@
   
   
     <a href="/2018/01/17/kotilin基本使用/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title">kotilin基本使用</div>
     </a>
   
@@ -151,7 +153,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -188,7 +190,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2018 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

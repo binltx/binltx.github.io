@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -83,12 +83,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="获取数据长度"><a href="#获取数据长度" class="headerlink" title="获取数据长度"></a>获取数据长度</h4><p>es搜索是必须分页的,如果没有指定size,那么会默认返回10条<br>但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> Pair&lt;Long, List&lt;T&gt;&gt; getAll(QueryBuilder queryBuilder) &#123;</div><div class="line">    <span class="keyword">int</span> size = <span class="number">5000</span>;</div><div class="line">    TimeValue keepAlive = TimeValue.timeValueMillis(<span class="number">1</span>);</div><div class="line">    SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getIndex()).setTypes(getType()).setQuery(queryBuilder).setSize(size).setScroll(keepAlive);</div><div class="line">    SearchResponse searchResponse = searchRequestBuilder.execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">    Pair&lt;Long, List&lt;T&gt;&gt; resultAndTotal = getResultAndTotal(searchResponse);</div><div class="line">    Long total = resultAndTotal.getKey();</div><div class="line">    <span class="keyword">if</span> (total &gt; size) &#123;</div><div class="line">        List&lt;T&gt; right = resultAndTotal.getRight();</div><div class="line">        String scrollId = searchResponse.getScrollId();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; total / size; i++) &#123;</div><div class="line">            SearchResponse searchResponse1 = client.prepareSearchScroll(scrollId).setScroll(keepAlive).execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">            right.addAll(getResult(searchResponse1));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> resultAndTotal;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+        <h4 id="Get"><a href="#Get" class="headerlink" title="Get"></a>Get</h4><h6 id="获取单个"><a href="#获取单个" class="headerlink" title="获取单个"></a>获取单个</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">getOnlyOne</span><span class="params">(String indexName, String typeName, String id, String... strings)</span> </span>&#123;</div><div class="line">    <span class="comment">// 获取指定的数据</span></div><div class="line">    GetRequestBuilder getRequestBuilder = client.prepareGet(indexName, typeName, id);</div><div class="line">    <span class="keyword">if</span> (strings != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 只获取需要的字段</span></div><div class="line">        getRequestBuilder.setFetchSource(strings, <span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> getResult(getRequestBuilder.get());</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">getResult</span><span class="params">(GetResponse response)</span> </span>&#123;</div><div class="line">    String source = response.getSourceAsString();</div><div class="line">    <span class="keyword">return</span> JSON.parseObject(source, entityClazz);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h6 id="批量获取"><a href="#批量获取" class="headerlink" title="批量获取"></a>批量获取</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> List&lt;T&gt; <span class="title">multiGet</span><span class="params">(String indexName, String typeName, List&lt;String&gt; ids, String... strings)</span> </span>&#123;</div><div class="line">    MultiGetRequestBuilder multiGetRequestBuilder = client.prepareMultiGet();</div><div class="line">    <span class="keyword">if</span> (strings == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> getResult(multiGetRequestBuilder.add(indexName, typeName, ids).get());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    FetchSourceContext fetchSourceContext = <span class="keyword">new</span> FetchSourceContext(<span class="keyword">true</span>, strings, <span class="keyword">null</span>);</div><div class="line">    ids.forEach(id -&gt; &#123;</div><div class="line">        MultiGetRequest.Item item1 = <span class="keyword">new</span> MultiGetRequest.Item(indexName, typeName, id);</div><div class="line">        item1.fetchSourceContext(fetchSourceContext);</div><div class="line">        multiGetRequestBuilder.add(item1);</div><div class="line">    &#125;);</div><div class="line">    MultiGetResponse multiGetItemResponses = multiGetRequestBuilder.get();</div><div class="line">    <span class="keyword">return</span> getResult(multiGetItemResponses);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> List&lt;T&gt; <span class="title">getResult</span><span class="params">(MultiGetResponse multiGetItemResponses)</span> </span>&#123;</div><div class="line">    MultiGetItemResponse[] responses = multiGetItemResponses.getResponses();</div><div class="line">    List&lt;T&gt; results = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">for</span> (MultiGetItemResponse respons : responses) &#123;</div><div class="line">        GetResponse response = respons.getResponse();</div><div class="line">        T result = getResult(response);</div><div class="line">        <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</div><div class="line">            results.add(result);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> results;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="模糊搜索–query"><a href="#模糊搜索–query" class="headerlink" title="模糊搜索–query"></a>模糊搜索–query</h4><p>这个有很多资料,就不复制了<br><a href="http://www.cnblogs.com/zhangchenliang/p/4195406.html" target="_blank" rel="noopener">elasticsearch-查询基础篇</a></p>
+<h4 id="获取数据长度"><a href="#获取数据长度" class="headerlink" title="获取数据长度"></a>获取数据长度</h4><p>es搜索是必须分页的,如果没有指定size,那么会默认返回10条<br>但同时es返回的数据条数最多为10000条(5.x, 6.x),超过会报错,那么当你的数据量超过10000条时,怎么获取全部数据呢,官方推荐使用Scroll<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">protected</span> Pair&lt;Long, List&lt;T&gt;&gt; getAll(QueryBuilder queryBuilder) &#123;</div><div class="line">    <span class="keyword">int</span> size = <span class="number">5000</span>;</div><div class="line">    TimeValue keepAlive = TimeValue.timeValueMillis(<span class="number">1</span>);</div><div class="line">    SearchRequestBuilder searchRequestBuilder = client.prepareSearch(getIndex()).setTypes(getType()).setQuery(queryBuilder).setSize(size).setScroll(keepAlive);</div><div class="line">    SearchResponse searchResponse = searchRequestBuilder.execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">    Pair&lt;Long, List&lt;T&gt;&gt; resultAndTotal = getResultAndTotal(searchResponse);</div><div class="line">    Long total = resultAndTotal.getKey();</div><div class="line">    <span class="keyword">if</span> (total &gt; size) &#123;</div><div class="line">        List&lt;T&gt; right = resultAndTotal.getRight();</div><div class="line">        String scrollId = searchResponse.getScrollId();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; total / size; i++) &#123;</div><div class="line">            SearchResponse searchResponse1 = client.prepareSearchScroll(scrollId).setScroll(keepAlive).execute().actionGet(getTimeout(), TimeUnit.MILLISECONDS);</div><div class="line">            right.addAll(getResult(searchResponse1));</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> resultAndTotal;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/19/elasticsearch基本使用--搜索/" data-id="cjclukptf00011gbq7zye17na" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/19/elasticsearch基本使用--搜索/" data-id="cjdfmfx3g0000x3bqoxqb8st7" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -128,12 +131,14 @@
 <h4 id="删除index"><a href="#删除index" class="headerlink" title="删除index"></a>删除index</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client.admin().indices().prepareDelete(indexName).get();</div></pre></td></tr></table></figure>
 <h4 id="添加-修改-数据"><a href="#添加-修改-数据" class="headerlink" title="添加/修改 数据"></a>添加/修改 数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">IndexResponse indexResponse = client.prepareIndex(getIndex(), getType(), id)</div><div class="line">        .setSource(JSON.toJSONString(entity), XContentType.JSON)</div><div class="line">        .get();</div></pre></td></tr></table></figure>
 <h4 id="修改部分数据"><a href="#修改部分数据" class="headerlink" title="修改部分数据"></a>修改部分数据</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">UpdateRequest updateRequest = <span class="keyword">new</span> UpdateRequest(getIndex(), getType(), id)</div><div class="line">        .doc(jsonBuilder()</div><div class="line">                .startObject()</div><div class="line">                .field(filed, value)</div><div class="line">                .endObject());</div><div class="line"></div><div class="line">UpdateResponse updateResponse = client.update(updateRequest).get();</div></pre></td></tr></table></figure>
+<p>上面的方法只能修改简单的基本类型和String,Date 这几种类型,复杂类型看下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">XContentBuilder xContentBuilder = jsonBuilder().startObject();</div><div class="line">xContentBuilder.startObject(filed);</div><div class="line">Map&lt;String, Object&gt; valueMap = JSON.parseObject(JSON.toJSONString(value), Map.class);</div><div class="line"><span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; objectEntry : valueMap.entrySet()) &#123;</div><div class="line">    xContentBuilder.field(objectEntry.getKey(), objectEntry.getValue());</div><div class="line">&#125;</div><div class="line">xContentBuilder.endObject();</div><div class="line">source.endObject();</div></pre></td></tr></table></figure></p>
+<p>更复杂的类型造这这个原理递推即可</p>
 <h4 id="需要强一致性"><a href="#需要强一致性" class="headerlink" title="需要强一致性"></a>需要强一致性</h4><p>es写接口默认写数量为 node/2 + 1 ,所以可能会出现写完成后查数据没有修改/写入,当你需要强一致性的时候,需要强制指定更新所有节点.<br>es会将数据加载到内存上,以提高查询速度,但你修改数据后,内存并不会实时更新,所以修改数据时同样需要指定更新内存数据<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">IndexResponse indexResponse = client.prepareIndex(getIndex(), getType(), id)</div><div class="line">        .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)</div><div class="line">        .setWaitForActiveShards(ActiveShardCount.ALL)</div><div class="line">        <span class="comment">// todo dosomething</span></div><div class="line">        ........</div></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/17/elasticsearch基本使用--增删改/" data-id="cjclukptb00001gbq7j1sadru" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/17/elasticsearch基本使用--增删改/" data-id="cjdfmfx3o0002x3bqhu048735" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -180,7 +185,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/17/kotilin基本使用/" data-id="cjclukptp00031gbqikvswsij" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/17/kotilin基本使用/" data-id="cjdfmfx4b0004x3bqq5s3l2q0" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -242,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjclukptr00051gbq62kw0j8s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/05/04/mysql使用规范/" data-id="cjdfmfx4a0003x3bqvim9fvf4" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -288,7 +293,7 @@ sudo apt-get install git
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cjclukptq00041gbq77fhzmx3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/30/git/" data-id="cjdfmfx3m0001x3bq4ih01f3p" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -342,7 +347,7 @@ sudo apt-get install git
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/04/30/hexo+github/" data-id="cjclukpto00021gbqoqw7sfe4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/04/30/hexo+github/" data-id="cjdfmfx4c0005x3bq8fhwamqm" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -377,7 +382,7 @@ sudo apt-get install git
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -414,7 +419,7 @@ sudo apt-get install git
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2018 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
